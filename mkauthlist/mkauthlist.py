@@ -279,12 +279,10 @@ arxiv_document = arxiv_authlist
 ### AANDA ###
 aanda_authlist = r"""
 \author{
-%(authors)s,
-%%\begin{center} (%(collaboration)s) \end{center}
+%(authors)s
 }
-%%\vspace{0.4cm}
 
-\scriptsize
+
 \institute{
 %(affiliations)s
 }
@@ -517,7 +515,7 @@ if __name__ == "__main__":
         elif cls == 'aanda':
             document = aanda_document
             authlist = aanda_authlist
-            affilmark = r' \inst{%s},'
+            affilmark = r'\inst{%s}'
             affiltext = r'\and %s '
         else:
             msg = "Unrecognized latex class: %s"%cls
@@ -548,12 +546,16 @@ if __name__ == "__main__":
                 # Strip trailing comma from last entry (note MNRAS comma position)
                 affmark = affmark.strip(',')
                 # Prefix 'and' on last entry (seems robust)
-                k = 'and ' + k
+                if cls != 'aanda': k = 'and ' + k
             author = k + affmark
+            if cls == 'aanda':
+                author = author.replace(' ', '~')
+                if i !=0: author = '\\and ' + author
             authors.append(author)
 
         if cls == 'aanda':
             for k, v in affidict.items():
+                print(k,v)
                 institution = k.rstrip(' ').lstrip(' ')
                 if institution == '':
                     pass #continue
