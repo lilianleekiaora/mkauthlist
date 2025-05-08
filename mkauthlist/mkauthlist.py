@@ -555,7 +555,6 @@ if __name__ == "__main__":
 
         if cls == 'aanda':
             for k, v in affidict.items():
-                print(k,v)
                 institution = k.rstrip(' ').lstrip(' ')
                 if institution == '':
                     pass #continue
